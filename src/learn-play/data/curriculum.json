@@ -1,0 +1,399 @@
+{
+    "_note": "PARTIAL SOURCE. The original curriculum PDF was not available. Unit headings/ranges and Unit 1 task titles come from the implementation brief. Tasks flagged \"draft\": true have EDITORIAL titles written from the unit descriptions and must be replaced by the original Arabic text.",
+    "units": [
+        {
+            "id": 1,
+            "firstTask": 1,
+            "lastTask": 7,
+            "titleEn": "Discover Robot Movement",
+            "titleAr": "اكتشف حركة الروبوت",
+            "objectiveEn": "Learn how the movement block drives the robot using rotations, seconds and degrees.",
+            "objectiveAr": "تعلّم كيف تحرّك الروبوت باستخدام الدورات والثواني والدرجات."
+        },
+        {
+            "id": 2,
+            "firstTask": 8,
+            "lastTask": 11,
+            "titleEn": "Speed & Stopping",
+            "titleAr": "السرعة والتوقف",
+            "objectiveEn": "Change the robot's speed and learn to stop it where you want.",
+            "objectiveAr": "غيّر سرعة الروبوت وتعلّم كيف توقفه في المكان الذي تريده."
+        },
+        {
+            "id": 3,
+            "firstTask": 12,
+            "lastTask": 18,
+            "titleEn": "Steering & Rotation",
+            "titleAr": "التوجيه والدوران",
+            "objectiveEn": "Steer the robot through curves and turns.",
+            "objectiveAr": "وجّه الروبوت عبر المنعطفات والدورانات."
+        },
+        {
+            "id": 4,
+            "firstTask": 19,
+            "lastTask": 24,
+            "titleEn": "Advanced Driving",
+            "titleAr": "القيادة المتقدمة",
+            "objectiveEn": "Combine speed and steering for more complex paths.",
+            "objectiveAr": "اجمع بين السرعة والتوجيه لرسم مسارات أكثر تعقيدًا."
+        },
+        {
+            "id": 5,
+            "firstTask": 25,
+            "lastTask": 32,
+            "titleEn": "Motor Basics",
+            "titleAr": "أساسيات المحركات",
+            "objectiveEn": "Control a single motor by rotations, degrees and seconds.",
+            "objectiveAr": "تحكّم في محرك واحد بالدورات والدرجات والثواني."
+        },
+        {
+            "id": 6,
+            "firstTask": 33,
+            "lastTask": 39,
+            "titleEn": "Motor Speed & Power",
+            "titleAr": "سرعة المحركات والطاقة",
+            "objectiveEn": "Set motor speed, run continuously and tell speed from power.",
+            "objectiveAr": "اضبط سرعة المحرك وشغّله باستمرار وميّز بين السرعة والطاقة."
+        },
+        {
+            "id": 7,
+            "firstTask": 40,
+            "lastTask": 48,
+            "titleEn": "Advanced Motors & Robot Arm",
+            "titleAr": "المحركات المتقدمة والذراع",
+            "objectiveEn": "Pivot on one wheel and control the robot arm precisely.",
+            "objectiveAr": "ادر الروبوت على عجلة واحدة وتحكّم في الذراع بدقة."
+        }
+    ],
+    "tasks": [
+        {
+            "id": 1,
+            "unitId": 1,
+            "titleAr": "اكتشف حركة الروبوت",
+            "titleEn": "Discover robot movement"
+        },
+        {
+            "id": 2,
+            "unitId": 1,
+            "titleAr": "الوصول إلى العلم",
+            "titleEn": "Reach the flag"
+        },
+        {
+            "id": 3,
+            "unitId": 1,
+            "titleAr": "عبور النفق",
+            "titleEn": "Cross the tunnel"
+        },
+        {
+            "id": 4,
+            "unitId": 1,
+            "titleAr": "الوصول بدقة",
+            "titleEn": "Reach precisely"
+        },
+        {
+            "id": 5,
+            "unitId": 1,
+            "titleAr": "أي وحدة أفضل؟",
+            "titleEn": "Which unit is better?"
+        },
+        {
+            "id": 6,
+            "unitId": 1,
+            "titleAr": "العودة للخلف",
+            "titleEn": "Reverse back"
+        },
+        {
+            "id": 7,
+            "unitId": 1,
+            "titleAr": "اذهب وعد",
+            "titleEn": "Go and come back"
+        },
+        {
+            "id": 8,
+            "unitId": 2,
+            "titleAr": "غيّر السرعة",
+            "titleEn": "Change the speed",
+            "draft": true
+        },
+        {
+            "id": 9,
+            "unitId": 2,
+            "titleAr": "قارن السرعات",
+            "titleEn": "Compare speeds",
+            "draft": true
+        },
+        {
+            "id": 10,
+            "unitId": 2,
+            "titleAr": "القيادة المستمرة",
+            "titleEn": "Keep driving",
+            "draft": true
+        },
+        {
+            "id": 11,
+            "unitId": 2,
+            "titleAr": "توقف قبل الصندوق",
+            "titleEn": "Stop before the box",
+            "draft": true
+        },
+        {
+            "id": 12,
+            "unitId": 3,
+            "titleAr": "انعطف يمينًا",
+            "titleEn": "Steer right",
+            "draft": true
+        },
+        {
+            "id": 13,
+            "unitId": 3,
+            "titleAr": "منعطف أحد",
+            "titleEn": "A sharper curve",
+            "draft": true
+        },
+        {
+            "id": 14,
+            "unitId": 3,
+            "titleAr": "انعطف يسارًا",
+            "titleEn": "Steer left",
+            "draft": true
+        },
+        {
+            "id": 15,
+            "unitId": 3,
+            "titleAr": "الدوران في المكان",
+            "titleEn": "Spin in place",
+            "draft": true
+        },
+        {
+            "id": 16,
+            "unitId": 3,
+            "titleAr": "ربع دورة بالدورات",
+            "titleEn": "Quarter turn with rotations",
+            "draft": true
+        },
+        {
+            "id": 17,
+            "unitId": 3,
+            "titleAr": "ربع دورة بالدرجات",
+            "titleEn": "Quarter turn with degrees",
+            "draft": true
+        },
+        {
+            "id": 18,
+            "unitId": 3,
+            "titleAr": "انعطف يسارًا 90 درجة",
+            "titleEn": "Turn left 90 degrees",
+            "draft": true
+        },
+        {
+            "id": 19,
+            "unitId": 4,
+            "titleAr": "السرعة والتوجيه",
+            "titleEn": "Speed and steering",
+            "draft": true
+        },
+        {
+            "id": 20,
+            "unitId": 4,
+            "titleAr": "سرعتا العجلتين",
+            "titleEn": "Two wheel speeds",
+            "draft": true
+        },
+        {
+            "id": 21,
+            "unitId": 4,
+            "titleAr": "توجيه مستمر",
+            "titleEn": "Keep steering",
+            "draft": true
+        },
+        {
+            "id": 22,
+            "unitId": 4,
+            "titleAr": "قُد ثم در ثم قُد",
+            "titleEn": "Drive, turn, drive",
+            "draft": true
+        },
+        {
+            "id": 23,
+            "unitId": 4,
+            "titleAr": "حول العائق",
+            "titleEn": "Around the obstacle",
+            "draft": true
+        },
+        {
+            "id": 24,
+            "unitId": 4,
+            "titleAr": "ارسم مربعًا",
+            "titleEn": "Drive a square",
+            "draft": true
+        },
+        {
+            "id": 25,
+            "unitId": 5,
+            "titleAr": "المحرك الأيسر",
+            "titleEn": "The left motor",
+            "draft": true
+        },
+        {
+            "id": 26,
+            "unitId": 5,
+            "titleAr": "المحرك الأيمن",
+            "titleEn": "The right motor",
+            "draft": true
+        },
+        {
+            "id": 27,
+            "unitId": 5,
+            "titleAr": "دورات المحرك",
+            "titleEn": "Motor rotations",
+            "draft": true
+        },
+        {
+            "id": 28,
+            "unitId": 5,
+            "titleAr": "درجات المحرك",
+            "titleEn": "Motor degrees",
+            "draft": true
+        },
+        {
+            "id": 29,
+            "unitId": 5,
+            "titleAr": "ثواني المحرك",
+            "titleEn": "Motor seconds",
+            "draft": true
+        },
+        {
+            "id": 30,
+            "unitId": 5,
+            "titleAr": "المحركان معًا",
+            "titleEn": "Both motors together",
+            "draft": true
+        },
+        {
+            "id": 31,
+            "unitId": 5,
+            "titleAr": "عكس المحرك",
+            "titleEn": "Reverse a motor",
+            "draft": true
+        },
+        {
+            "id": 32,
+            "unitId": 5,
+            "titleAr": "الرجوع بالمحركات",
+            "titleEn": "Reverse out with motors",
+            "draft": true
+        },
+        {
+            "id": 33,
+            "unitId": 6,
+            "titleAr": "اضبط سرعة المحرك",
+            "titleEn": "Set the motor speed",
+            "draft": true
+        },
+        {
+            "id": 34,
+            "unitId": 6,
+            "titleAr": "أقصى سرعة",
+            "titleEn": "Full speed",
+            "draft": true
+        },
+        {
+            "id": 35,
+            "unitId": 6,
+            "titleAr": "شغّل المحرك وأوقفه",
+            "titleEn": "Run and stop a motor",
+            "draft": true
+        },
+        {
+            "id": 36,
+            "unitId": 6,
+            "titleAr": "السرعة والزمن",
+            "titleEn": "Speed and time",
+            "draft": true
+        },
+        {
+            "id": 37,
+            "unitId": 6,
+            "titleAr": "السرعة أم الطاقة؟",
+            "titleEn": "Speed or power?",
+            "draft": true
+        },
+        {
+            "id": 38,
+            "unitId": 6,
+            "titleAr": "بطيء ودقيق",
+            "titleEn": "Slow and precise",
+            "draft": true
+        },
+        {
+            "id": 39,
+            "unitId": 6,
+            "titleAr": "سريع ومستمر",
+            "titleEn": "Fast and continuous",
+            "draft": true
+        },
+        {
+            "id": 40,
+            "unitId": 7,
+            "titleAr": "الدوران حول العجلة اليمنى",
+            "titleEn": "Pivot on the right wheel",
+            "draft": true
+        },
+        {
+            "id": 41,
+            "unitId": 7,
+            "titleAr": "الدوران حول العجلة اليسرى",
+            "titleEn": "Pivot on the left wheel",
+            "draft": true
+        },
+        {
+            "id": 42,
+            "unitId": 7,
+            "titleAr": "البوابة اليمنى",
+            "titleEn": "The right gate",
+            "draft": true
+        },
+        {
+            "id": 43,
+            "unitId": 7,
+            "titleAr": "البوابة اليسرى",
+            "titleEn": "The left gate",
+            "draft": true
+        },
+        {
+            "id": 44,
+            "unitId": 7,
+            "titleAr": "تحكم دقيق بالمحرك",
+            "titleEn": "Precise motor control",
+            "draft": true
+        },
+        {
+            "id": 45,
+            "unitId": 7,
+            "titleAr": "ارفع الذراع",
+            "titleEn": "Raise the arm",
+            "draft": true
+        },
+        {
+            "id": 46,
+            "unitId": 7,
+            "titleAr": "اخفض الذراع",
+            "titleEn": "Lower the arm",
+            "draft": true
+        },
+        {
+            "id": 47,
+            "unitId": 7,
+            "titleAr": "التحكم بسرعة الذراع",
+            "titleEn": "Arm speed control",
+            "draft": true
+        },
+        {
+            "id": 48,
+            "unitId": 7,
+            "titleAr": "التحدي النهائي",
+            "titleEn": "Final challenge",
+            "draft": true
+        }
+    ]
+}
