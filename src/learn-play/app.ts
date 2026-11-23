@@ -81,13 +81,16 @@ export class LearnPlayApp {
     }
 
     private header(): HTMLElement {
-        /** Placeholder labels until this SPA is embedded on 01skills.com (links disabled). */
+        /** Plain text labels only — no hrefs until this SPA is embedded on 01skills.com. */
         const navLabel = (key: StringKey, current = false): HTMLElement =>
             el(
                 'span',
                 {
-                    class: current ? 'lp-nav-item lp-nav-current' : 'lp-nav-item lp-nav-disabled',
-                    ...(current ? { 'aria-current': 'page' } : { 'aria-disabled': 'true' })
+                    class: current
+                        ? 'lp-nav-item lp-nav-disabled lp-nav-current'
+                        : 'lp-nav-item lp-nav-disabled',
+                    'aria-disabled': 'true',
+                    ...(current ? { 'aria-current': 'page' } : {})
                 },
                 this.tr(key)
             );

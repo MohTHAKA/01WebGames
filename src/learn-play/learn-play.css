@@ -61,22 +61,26 @@ a {
     flex: 1;
     flex-wrap: wrap;
     gap: 4px 20px;
+    pointer-events: none;
+    user-select: none;
 }
 
 .lp-nav-item {
-    color: var(--lp-text);
+    color: var(--lp-muted);
     text-decoration: none;
     padding: 6px 2px;
     border-bottom: 2px solid transparent;
+    cursor: default;
+    pointer-events: none;
 }
 
 .lp-nav-current {
+    /* Section marker only — not a control */
     border-bottom-color: var(--lp-purple);
     color: var(--lp-pink);
 }
 
 .lp-nav-disabled {
-    color: var(--lp-muted);
     cursor: default;
     pointer-events: none;
     user-select: none;
