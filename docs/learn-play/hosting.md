@@ -33,6 +33,22 @@ Node.js **22.23.2+** is required to build. Runtime needs only a static file host
 
 Do **not** open `index.html` as a `file://` URL; WebGL and ES modules need HTTP(S).
 
+## GitHub Pages (auto-deploy)
+
+This repo deploys `dist/` to GitHub Pages on every push to `main` (and on manual **workflow_dispatch**).
+
+| Item | Value |
+| ---- | ----- |
+| Workflow | [`.github/workflows/deploy-pages.yml`](../../.github/workflows/deploy-pages.yml) |
+| Public URL | `https://mohthaka.github.io/01WebGames/` |
+| Build | `npm ci` → typecheck → test → `npm run build` |
+
+**One-time:** GitHub → repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+Relative `base: './'` and hash routes work under the `/01WebGames/` project path. `public/.nojekyll` is copied into `dist/` so Pages does not run Jekyll on the build.
+
+For production on 01skills.com, keep publishing `dist/` to `/learn-play/` as below; Pages is the shareable preview that tracks `main`.
+
 ## Link from the main site
 
 Add a nav item that matches the other 01skills sections:
