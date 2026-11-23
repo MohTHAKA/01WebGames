@@ -103,14 +103,14 @@ export class LearnPlayApp {
         langBtn.addEventListener('click', () => this.toggleLang());
 
         const logo = el(
-            'a',
-            { href: 'https://01skills.com/', class: 'lp-logo-link' },
+            'span',
+            { class: 'lp-logo-link lp-logo-disabled', 'aria-disabled': 'true' },
             el('img', {
                 class: 'lp-logo',
-                src: './zero1-logo-placeholder.svg',
+                src: './zero1-logo.png',
                 alt: this.tr('logoAlt'),
-                width: '120',
-                height: '32'
+                width: '160',
+                height: '44'
             })
         );
 

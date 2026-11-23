@@ -14,7 +14,7 @@
 | Tasks 1-48 playable with a reference solution each                              | Implemented; every solution is verified by tests               |
 | Task titles 8-48, instructions, hints, maps, tolerances                         | **Editorial drafts** (flagged "Draft title" in the UI)         |
 | Original curriculum text for tasks 8-48                                         | **Missing source text**                                        |
-| ZERO1 logo                                                                      | **Placeholder**                                                |
+| ZERO1 logo                                                                      | `public/zero1-logo.png`                                        |
 | Help modal                                                                      | Simplified to a collapsible panel listing the mission's blocks |
 | Coding Games (6 games, playable)                                                | Implemented                                                    |
 | Existing-API progress store                                                     | None exists; local only                                        |

@@ -117,7 +117,7 @@ location /learn-play/assets/ {
 
 | Item                           | Status in this repo                                                                                                         |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| Final ZERO1 / 01skills logo    | Placeholder SVG (`public/zero1-logo-placeholder.svg`) — replace and keep the same filename, or change the `src` in `app.ts` |
+| Final ZERO1 / 01skills logo    | `public/zero1-logo.png` (from 01skills.com brand mark) — swap the file to update header and favicon |
 | Curriculum text for tasks 8–48 | Editorial drafts in UI; replace from the official PDF when available                                                        |
 | Favicon / app icon             | Optional; add `public/favicon.svg` (or `.ico`) and a `<link>` in `index.html`                                               |
 | Account-linked progress        | Not implemented; progress is device-local only                                                                              |
