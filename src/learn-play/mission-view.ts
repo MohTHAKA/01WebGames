@@ -72,6 +72,11 @@ export const mountMission = async (host: HTMLElement, ctx: MissionContext): Prom
     const stopBtn = mkBtn('stop', 'stop', 'lp-btn-alt');
     const resetBtn = mkBtn('reset', 'reset', 'lp-btn-alt');
     const hintBtn = mkBtn('hint', 'hint', 'lp-btn-alt');
+    // Hints unlock 5 seconds after the mission opens
+    hintBtn.disabled = true;
+    const hintTimer = window.setTimeout(() => {
+        hintBtn.disabled = false;
+    }, 5000);
     const sfx = createSfx();
     const soundBtn = mkBtn(
         sfx.isMuted() ? 'soundOff' : 'soundOn',
@@ -468,6 +473,7 @@ export const mountMission = async (host: HTMLElement, ctx: MissionContext): Prom
 
     return () => {
         disposed = true;
+        window.clearTimeout(hintTimer);
         cancelAnimationFrame(raf);
         ro.disconnect();
         workspace.dispose();
