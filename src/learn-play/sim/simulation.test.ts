@@ -364,8 +364,8 @@ describe('Coding Games levels', () => {
     it('distance sensor reads the free space ahead and stops the robot there', () => {
         const mission = getMission(1202);
         if (!mission) throw new Error('missing 1202');
-        // Start (0, -1.4) facing +y: crate bottom edge at y = 0.25, robot radius 0.12.
-        expect(distanceAheadCm(mission, mission.startPose)).toBeCloseTo((0.25 + 1.4 - 0.12) * 100, 3);
+        // Start (0, -1.4) facing +y: crate bottom edge at y = 0.5, robot radius 0.12.
+        expect(distanceAheadCm(mission, mission.startPose)).toBeCloseTo((0.5 + 1.4 - 0.12) * 100, 3);
         // Facing right from the start the arena wall is 1.2 m away.
         const right = { ...mission.startPose, headingRadians: Math.PI / 2 };
         expect(distanceAheadCm(mission, right)).toBeCloseTo((1.2 - 0.12) * 100, 3);

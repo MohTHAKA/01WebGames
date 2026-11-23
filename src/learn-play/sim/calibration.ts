@@ -35,7 +35,8 @@ export const SENSOR_MAX_CM = 200;
 /** Cargo handling: how close the cargo must be to grab it, how far ahead it is carried, and the arm limit. */
 export const CARGO = {
     reachMeters: 0.3,
-    carryOffsetMeters: 0.2,
+    /** Ahead of the robot centre so the crate clears the body and sprite (not stacked on top). */
+    carryOffsetMeters: 0.42,
     /** The arm counts as lowered at or below this angle (motor degrees). */
     armLoweredMaxDegrees: 40
 } as const;

@@ -212,7 +212,7 @@ export const gameSolutions: Record<number, SolutionBlock[]> = {
     1402: [TURN_RIGHT, mv('forward', 0.85, 'rotations'), TURN_LEFT, mv('forward', 7.4, 'rotations')],
     1403: [mv('forward', 4, 'rotations'), motorFor('arm', 'forward', 1.5, 'rotations'), mv('backward', 4, 'rotations')],
     1404: [],
-    1501: [LOWER_ARM, mv('forward', 2.5, 'rotations'), grab(), mv('forward', 4.32, 'rotations'), release()],
+    1501: [LOWER_ARM, mv('forward', 2.5, 'rotations'), grab(), mv('forward', 3.7, 'rotations'), release()],
     1502: [
         LOWER_ARM,
         mv('forward', 2.5, 'rotations'),

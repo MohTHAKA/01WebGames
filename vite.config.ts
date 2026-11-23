@@ -5,6 +5,15 @@ export default defineConfig({
     // Relative URLs, so the build runs wherever it's served from: a domain root, a subpath such as
     // GitHub Pages or itch.io, or a Snapchat Web Lens
     base: './',
+    server: {
+        // Listen on all interfaces so phones / other PCs on the same Wi‑Fi can use npm run dev
+        host: true,
+        port: 5173
+    },
+    preview: {
+        host: true,
+        port: 4173
+    },
     build: {
         // A PlayCanvas build is 1-2.5 MB minified (300-600 kB gzipped), nearly all of it engine code the
         // first frame needs, so warn only for chunks well past that rather than at Vite's 500 kB default

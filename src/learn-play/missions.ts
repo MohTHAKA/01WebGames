@@ -93,7 +93,8 @@ export const missions: readonly MissionDefinition[] = [
     define(4, {
         unitId: 1,
         blocks: U1,
-        obstacles: [box(0, 0.9, 0.15, 0.15)],
+        // Crate sits well past the stop flag so the upright flag sprite does not sit on the box.
+        obstacles: [box(0, 1.35, 0.15, 0.15)],
         zones: [flag(0, 0.45, 0.12, 'stop')],
         conditions: [{ type: 'usesOnlyUnit', unit: 'degrees' }, inZone('stop')]
     }),
@@ -146,7 +147,7 @@ export const missions: readonly MissionDefinition[] = [
     define(11, {
         unitId: 2,
         blocks: U2,
-        obstacles: [box(0, 0.9, 0.15, 0.15)],
+        obstacles: [box(0, 1.35, 0.15, 0.15)],
         zones: [flag(0, 0.45, 0.12, 'stop')],
         conditions: [uses(B.startMove), uses(B.wait), uses(B.stop), inZone('stop')]
     }),

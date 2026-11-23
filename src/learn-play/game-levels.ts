@@ -119,7 +119,8 @@ export const gameLevels: readonly MissionDefinition[] = [
     // Sensor Rush - stop exactly where the distance sensor says. The goal sits at the stopping spot
     // of the intended reading, so guessing a number of rotations is not the way to solve it.
     level(1201, [goal(0, 1.48)], [inGoal, usesSensor], [], SENSOR_BLOCKS),
-    level(1202, [goal(0, -0.12)], [inGoal, usesSensor], [wall(0, 0.6, 0.35, 0.35)], SENSOR_BLOCKS),
+    // Crate further up the lane so the stop flag sits clearly in front of it (25 cm sensor gap unchanged).
+    level(1202, [goal(0, 0.13)], [inGoal, usesSensor], [wall(0, 0.85, 0.35, 0.35)], SENSOR_BLOCKS),
     level(1203, [goal(0.78, 1.48)], [inGoal, usesSensor], [], SENSOR_BLOCKS),
     level(1204, [goal(0.78, 1.48)], [inGoal, usesSensor], [wall(-0.35, 0.4, 0.85, 0.05)], SENSOR_BLOCKS),
 
@@ -415,8 +416,8 @@ export const gameLevelText: Record<number, MissionText> = {
             'المنصة في الأعلى جهة اليمين. انقل الصندوق إليها وضعه.'
         ],
         [
-            'The crate rides 20 cm in front of the robot, so turn with it still held.',
-            'يسير الصندوق على بعد 20 سم أمام الروبوت، فانعطف وهو ما زال ممسوكًا.'
+            'The crate rides 40 cm in front of the robot, so turn with it still held.',
+            'يسير الصندوق على بعد 40 سم أمام الروبوت، فانعطف وهو ما زال ممسوكًا.'
         ],
         [
             'After the grab: turn right, move 2.5, turn left, move 2.9, release.',

@@ -2,6 +2,7 @@ import {
     Asset,
     AppBase,
     AppOptions,
+    BLEND_NONE,
     BLEND_NORMAL,
     CameraComponentSystem,
     Color,
@@ -57,11 +58,18 @@ const flat = (hex: string, alpha = 1): StandardMaterial => {
 
 /** Sprite plane size in meters: the robot's footprint plus the margin the sprite render leaves. */
 /** Seconds for the robot sprite to cross-fade when its facing direction changes. */
-/** Cargo crate edge and the height of its centre (it sits just above the floor). */
-const CARGO_SIZE = 0.26;
-const CARGO_HEIGHT = CARGO_SIZE / 2 + 0.02;
-/** Height of walls and crates in the 2.5D view, in meters. */
+/** Cargo cube edge length in meters. */
+const CARGO_SIZE = 0.28;
+const CARGO_LIFT = CARGO_SIZE / 2 + 0.03;
+/** Height of wall slabs in the 2.5D view, in meters. */
 const PROP_HEIGHT = 0.3;
+/** Square obstacle crates stay short so their volume does not cover the robot sprite. */
+const CRATE_HEIGHT = 0.08;
+/** Flag billboard size; kept modest so it does not lean into nearby crates. */
+const FLAG_SIZE = 0.32;
+/** Transparent draw order: flags under the robot, robot on top. */
+const DRAW_FLAG = 100;
+const DRAW_ROBOT = 200;
 const FADE_SECONDS = 0.15;
 const PARTICLE_POOL = 64;
 const RING_POOL = 6;
@@ -134,16 +142,19 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         app.assets.load(asset);
     };
 
-    /** Opaque-looking textured material: transparent texels are cut out, so boxes sort and occlude correctly. */
-    const cutoutTexture = (mat: StandardMaterial, url: string): void => {
-        const asset = new Asset(`cutout-${url}`, 'texture', { url });
+    /**
+     * Opaque textured material (emissive map only). crate.png is a solid wood illustration with no
+     * useful alpha — opacityMap/'a' or alphaTest would discard the whole mesh.
+     */
+    const opaqueTexture = (mat: StandardMaterial, url: string, depthWrite = true): void => {
+        const asset = new Asset(`opaque-${url}-${depthWrite ? 'd' : 'n'}`, 'texture', { url });
         asset.ready((a) => {
             const tex = a.resource as Texture;
             mat.emissive = new Color(1, 1, 1);
             mat.emissiveMap = tex;
-            mat.opacityMap = tex;
-            mat.opacityMapChannel = 'a';
-            mat.alphaTest = 0.5;
+            mat.opacity = 1;
+            mat.blendType = BLEND_NONE;
+            mat.depthWrite = depthWrite;
             mat.update();
         });
         app.assets.add(asset);
@@ -197,12 +208,17 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
     const startRing = add('start', 'cylinder', flat('#224248'));
     place(startRing, start.x, 0.01, -start.y, 0.4, 0.02, 0.4);
 
+    /** Raise transparent mesh draw order so later layers (robot) paint over earlier ones (flags). */
+    const drawOrder = (e: Entity, order: number): void => {
+        for (const mi of e.render?.meshInstances ?? []) mi.drawOrder = order;
+    };
+
     /** Wooden crate seen from above (used for box-shaped obstacles and the box pads). */
-    const crateMat = flat('#ffffff');
-    cutoutTexture(crateMat, './crate.png');
+    const crateMat = flat('#c4a574');
+    opaqueTexture(crateMat, './crate.png');
     const crate = (name: string, x: number, y: number, width: number, depth: number): void => {
         const e = add(name, 'box', crateMat);
-        place(e, x, PROP_HEIGHT / 2, -y, width, PROP_HEIGHT, depth);
+        place(e, x, CRATE_HEIGHT / 2, -y, width, CRATE_HEIGHT, depth);
     };
 
     const zoneColor = { flag: '#62fbff', exit: '#ed9bfc', box: '#ba46ff', gate: '#ffd166' } as const;
@@ -215,8 +231,10 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
             if (z.kind === 'flag') {
                 const flagMat = flat('#ffffff');
                 const flagPlane = add(`flag-${z.id}`, 'plane', flagMat);
-                standUp(flagPlane, z.x, -z.y, 0.42, 0.42);
+                // Plant the pole a touch toward the camera so the cloth does not sit on a crate behind it.
+                standUp(flagPlane, z.x, -z.y + 0.06, FLAG_SIZE, FLAG_SIZE);
                 spriteTexture(flagMat, './flag.png');
+                drawOrder(flagPlane, DRAW_FLAG);
             } else {
                 const disc = add(`zone-${z.id}`, 'cylinder', flat(zoneColor[z.kind], 0.55));
                 place(disc, z.x, 0.02, -z.y, z.radius * 2, 0.02, z.radius * 2);
@@ -226,11 +244,16 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         }
     }
 
-    // Cargo crates sit above the robot sprite so a carried crate stays visible.
+    // Movable cargo cubes. Texture is applied without opacity/alphaTest — crate.png has no alpha
+    // and cutout materials were discarding every texel. Carry offset keeps them off the robot.
     const cargoEntities = new Map<string, Entity>();
-    for (const c of mission.cargo ?? []) {
-        const e = add(`cargo-${c.id}`, 'box', crateMat);
-        place(e, c.x, CARGO_HEIGHT, -c.y, CARGO_SIZE, CARGO_SIZE, CARGO_SIZE);
+    const cargoList = mission.cargo ?? [];
+    for (const c of cargoList) {
+        const cargoMat = flat('#d4a017');
+        // Depth write stays on so the ground cannot paint over the crate; the robot ignores depth instead.
+        opaqueTexture(cargoMat, './crate.png', true);
+        const e = add(`cargo-${c.id}`, 'box', cargoMat);
+        place(e, c.x, CARGO_LIFT, -c.y, CARGO_SIZE, CARGO_SIZE, CARGO_SIZE);
         cargoEntities.set(c.id, e);
     }
 
@@ -258,6 +281,9 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         const entity = add(`robot-${angle}`, 'plane', mat);
         entity.enabled = false;
         spriteTexture(mat, `./robot-${angle}.png`);
+        // Robot layer is always above the crate: transparent pass, no depth test.
+        mat.depthTest = false;
+        drawOrder(entity, DRAW_ROBOT);
         return { entity, mat, alpha: 0, axis: (angle + 180) % 360 };
     });
     sprites[SHEET_ANGLES.indexOf(180)].alpha = 1;
@@ -411,7 +437,7 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         setCargo: (positions) => {
             for (const [id, e] of cargoEntities) {
                 const p = positions.get(id);
-                if (p) e.setLocalPosition(p.x, CARGO_HEIGHT, -p.y);
+                if (p) e.setLocalPosition(p.x, CARGO_LIFT, -p.y);
             }
         },
         setPose: (pose) => {

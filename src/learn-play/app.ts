@@ -1,4 +1,4 @@
-import { getTask, getUnit, taskTitle, tasksOfUnit, unitObjective, unitTitle, units } from './curriculum.ts';
+import { getTask, getUnit, taskTitle, tasks, tasksOfUnit, unitObjective, unitTitle, units } from './curriculum.ts';
 import type { Lang, Task, Unit } from './curriculum.ts';
 import { el } from './dom.ts';
 import { gameLevelInfo } from './game-levels.ts';
@@ -149,6 +149,15 @@ export class LearnPlayApp {
         return tasksOfUnit(unit.id).filter((x) => this.progress.isTaskCompleted(x.id)).length;
     }
 
+    /** Overall home completion: learning-path tasks plus coding-game levels. */
+    private overallCompletion(): { done: number; total: number; percent: number } {
+        const ids = [...tasks.map((t) => t.id), ...gameLevelInfo.map((l) => l.id)];
+        const total = ids.length;
+        const done = ids.filter((id) => this.progress.isTaskCompleted(id)).length;
+        const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+        return { done, total, percent };
+    }
+
     private homeView(): HTMLElement {
         const unitCards = units.map((u) => {
             const count = tasksOfUnit(u.id).length;
@@ -208,11 +217,33 @@ export class LearnPlayApp {
             );
         });
 
+        const { done, total, percent } = this.overallCompletion();
+        const completion = el(
+            'div',
+            {
+                class: 'lp-completion',
+                role: 'status',
+                'aria-label': `${this.tr('completionRate')}: ${percent}%`
+            },
+            el('span', { class: 'lp-completion-label' }, this.tr('completionRate')),
+            el('span', { class: 'lp-completion-value' }, `${percent}%`),
+            el('span', { class: 'lp-completion-meta' }, `${done}/${total}`)
+        );
+
         return el(
             'div',
             {},
-            el('h1', { class: 'lp-title' }, this.tr('pageTitle')),
-            el('p', { class: 'lp-intro' }, this.tr('intro')),
+            el(
+                'div',
+                { class: 'lp-home-hero' },
+                el(
+                    'div',
+                    { class: 'lp-home-hero-text' },
+                    el('h1', { class: 'lp-title' }, this.tr('pageTitle')),
+                    el('p', { class: 'lp-intro' }, this.tr('intro'))
+                ),
+                completion
+            ),
             el(
                 'div',
                 { class: 'lp-columns' },

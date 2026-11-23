@@ -7,18 +7,66 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies and build output
 node_modules
 dist
 dist-ssr
 *.local
+.vite
+.turbo
+coverage
+*.tsbuildinfo
 
-# Editor directories and files
+# Environment and secrets (never commit real values)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+*.secret
+credentials.json
+service-account*.json
+.npmrc.auth
+.secrets
+
+# Editor / OS
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
+Desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# AI / agent local state (do not version)
+.cursor/
+.claude/
+.codex/
+.agents/cache/
+*.agent.json
+agent-transcripts/
+
+# Python tooling caches (art pipeline)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Misc local dumps
+*.sql
+*.dump
+*.bak
+*.tmp
+tmp/
+temp/

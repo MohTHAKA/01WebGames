@@ -4,6 +4,7 @@ const strings = {
     en: {
         pageTitle: 'Learn & Play',
         intro: 'Learn to program the ZERO1 robot step by step, then put your skills to work in coding games.',
+        completionRate: 'Completion',
         learningPath: 'Learning Path',
         codingGames: 'Coding Games',
         tasks: 'tasks',
@@ -46,6 +47,7 @@ const strings = {
     ar: {
         pageTitle: 'تعلّم والعب',
         intro: 'تعلّم برمجة روبوت ZERO1 خطوة بخطوة، ثم استخدم مهاراتك في ألعاب البرمجة.',
+        completionRate: 'نسبة الإنجاز',
         learningPath: 'مسار التعلّم',
         codingGames: 'ألعاب البرمجة',
         tasks: 'مهام',
