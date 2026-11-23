@@ -81,16 +81,17 @@ export class LearnPlayApp {
     }
 
     private header(): HTMLElement {
-        /** Absolute links into the main 01skills.com site; Learn & Play stays on this SPA. */
-        const site = (key: StringKey, href: string): HTMLElement =>
-            el('a', { class: 'lp-nav-item', href, target: '_self', rel: 'noopener' }, this.tr(key));
+        /** Placeholder labels until this SPA is embedded on 01skills.com (links disabled). */
+        const navLabel = (key: StringKey, current = false): HTMLElement =>
+            el(
+                'span',
+                {
+                    class: current ? 'lp-nav-item lp-nav-current' : 'lp-nav-item lp-nav-disabled',
+                    ...(current ? { 'aria-current': 'page' } : { 'aria-disabled': 'true' })
+                },
+                this.tr(key)
+            );
 
-        const home = site('home', 'https://01skills.com/');
-        const current = el(
-            'a',
-            { class: 'lp-nav-item lp-nav-current', href: '#/', 'aria-current': 'page' },
-            this.tr('pageTitle')
-        );
         const langBtn = el(
             'button',
             { class: 'lp-lang', type: 'button', 'aria-label': this.tr('languageLabel') },
@@ -117,11 +118,11 @@ export class LearnPlayApp {
             el(
                 'nav',
                 { class: 'lp-nav', 'aria-label': this.tr('mainNav') },
-                home,
-                site('events', 'https://01skills.com/events/'),
-                site('challenges', 'https://01skills.com/challenges/'),
-                current,
-                site('support', 'https://01skills.com/support/')
+                navLabel('home'),
+                navLabel('events'),
+                navLabel('challenges'),
+                navLabel('pageTitle', true),
+                navLabel('support')
             ),
             langBtn
         );

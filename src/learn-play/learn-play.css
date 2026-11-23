@@ -78,6 +78,8 @@ a {
 .lp-nav-disabled {
     color: var(--lp-muted);
     cursor: default;
+    pointer-events: none;
+    user-select: none;
 }
 
 .lp-lang {
