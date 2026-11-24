@@ -87,6 +87,22 @@ const SHEET_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
 /** The robot billboard: wide enough to cover the collision footprint, height from the art's aspect. */
 const SPRITE_WIDTH = DEFAULT_CALIBRATION.robotRadiusMeters * 2 * 1.9;
 const SPRITE_HEIGHT = (SPRITE_WIDTH * 316) / 297;
+/**
+ * Scene backdrop per game, chosen by the task id block (see game-levels.ts): 1000s Code Quest,
+ * 1100s Logic Maze, 1200s Sensor Rush, 1300s Pattern Builder, 1400s Robot Arena, 1500s Robo
+ * Logistics. Learning-path tasks (below 1000) use the generic lab.
+ */
+const backgroundUrl = (taskId: number): string => {
+    const byHundred: Record<number, string> = {
+        10: 'quest',
+        11: 'maze',
+        12: 'sensor',
+        13: 'pattern',
+        14: 'arena',
+        15: 'logistics'
+    };
+    return `./bg-${byHundred[Math.floor(taskId / 100)] ?? 'lab'}.jpg`;
+};
 /** Grid cell size in meters (~1 wheel rotation) so distance is readable from above. */
 const GRID_CELL = 0.35;
 
@@ -357,6 +373,21 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         camBase.z = dist * c;
         camera.setPosition(camBase.x, camBase.y, camBase.z);
     };
+
+    const background = (() => {
+        const mat = flat('#ffffff');
+        // Using an opaque texture because it's a solid JPEG
+        opaqueTexture(mat, backgroundUrl(mission.taskId), false);
+        return add('background', 'plane', mat);
+    })();
+    // Place it far back and scale it up to fill the view
+    const bgDist = 35; // Near the farClip plane
+    const bgScale = bgDist * Math.tan((FOV * Math.PI) / 360) * 2;
+    place(background, 0, 14 * Math.sin(TILT_RAD) - bgDist * Math.sin(TILT_RAD), 14 * Math.cos(TILT_RAD) - bgDist * Math.cos(TILT_RAD), bgScale * 1.5, 1, bgScale);
+    // Face the camera directly
+    background.setLocalEulerAngles(90 - TILT_DEG, 0, 0);
+    // Draw it before everything else
+    drawOrder(background, 10);
 
     const resize = (width: number, height: number): { cellCssPx: number } => {
         if (width < 1 || height < 1) return { cellCssPx: 24 };
