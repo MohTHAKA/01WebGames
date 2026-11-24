@@ -73,10 +73,15 @@ const DRAW_ROBOT = 200;
 const FADE_SECONDS = 0.15;
 const PARTICLE_POOL = 64;
 const RING_POOL = 6;
-/** Fixed camera pitch below the horizon; the camera looks at the arena centre from +z. */
-const TILT_DEG = 55;
+/** Perspective camera pitch below the horizon; it looks at the arena centre from +z. */
+const TILT_DEG = 32;
 const TILT_RAD = (TILT_DEG * Math.PI) / 180;
-const CAMERA_DISTANCE = 14;
+const FOV = 36;
+/** Extra world margin (meters) around the arena when fitting the camera. */
+const FIT_MARGIN = 0.02;
+/** Perimeter wall height and thickness (meters). */
+const EDGE_WALL_HEIGHT = 0.14;
+const EDGE_WALL_THICKNESS = 0.06;
 /** Robot sheet views (degrees, 0 = front toward the camera) in public/robot-<angle>.png. */
 const SHEET_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
 /** The robot billboard: wide enough to cover the collision footprint, height from the art's aspect. */
@@ -86,8 +91,8 @@ const SPRITE_HEIGHT = (SPRITE_WIDTH * 316) / 297;
 const GRID_CELL = 0.35;
 
 /**
- * Top-down orthographic arena. PlayCanvas only renders; the pose comes from the headless simulation.
- * The canvas is the only WebGL context this view owns and `destroy()` releases it.
+ * Tilted perspective arena with edge walls. PlayCanvas only renders; the pose comes from the
+ * headless simulation. The canvas is the only WebGL context this view owns and `destroy()` releases it.
  */
 export const createArenaScene = async (canvas: HTMLCanvasElement, mission: MissionDefinition): Promise<ArenaScene> => {
     const device = await createGraphicsDevice(canvas, { alpha: true });
@@ -273,6 +278,26 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         }
     }
 
+    // Low walls around the arena edge give the perspective camera something to read depth against.
+    // They sit just outside the floor so the playable area is unchanged.
+    {
+        const t = EDGE_WALL_THICKNESS;
+        const hw = mission.halfWidth;
+        const hh = mission.halfHeight;
+        const strips: [number, number, number, number][] = [
+            [0, -hh - t / 2, hw * 2 + t * 2, t],
+            [0, hh + t / 2, hw * 2 + t * 2, t],
+            [-hw - t / 2, 0, t, hh * 2],
+            [hw + t / 2, 0, t, hh * 2]
+        ];
+        for (const [cx, cz, w, d] of strips) {
+            const body = add('edge', 'box', wallSide);
+            place(body, cx, EDGE_WALL_HEIGHT / 2, cz, w, EDGE_WALL_HEIGHT, d);
+            const top = add('edge-top', 'plane', wall);
+            place(top, cx, EDGE_WALL_HEIGHT + 0.002, cz, w, 1, d);
+        }
+    }
+
     // Robot: eight camera-facing billboards, one per sheet view. The sheet's angle is the view of
     // the robot from the camera (0 = front toward the camera), so the heading it shows is
     // `(sheetAngle + 180) % 360`: heading 0 drives away from the camera and shows the back view.
@@ -291,31 +316,52 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
 
     const camera = new Entity('camera');
     camera.addComponent('camera', {
-        projection: 1,
-        orthoHeight: mission.halfHeight + 0.1,
+        projection: 0,
+        fov: FOV,
         clearColor: new Color(0, 0, 0, 0),
         nearClip: 0.1,
         farClip: 40
     });
-    const camBase = { x: 0, y: CAMERA_DISTANCE * Math.sin(TILT_RAD), z: CAMERA_DISTANCE * Math.cos(TILT_RAD) };
+    const camBase = { x: 0, y: 14 * Math.sin(TILT_RAD), z: 14 * Math.cos(TILT_RAD) };
     camera.setPosition(camBase.x, camBase.y, camBase.z);
     camera.setEulerAngles(-TILT_DEG, 0, 0);
     app.root.addChild(camera);
 
+    /**
+     * Perspective fit: smallest camera distance (looking at the arena centre along the tilt) so the
+     * floor corners and the robot sprite at the far edge stay inside the frame.
+     */
+    const fitPerspective = (aspect: number): void => {
+        const s = Math.sin(TILT_RAD);
+        const c = Math.cos(TILT_RAD);
+        const tanHalf = Math.tan((FOV * Math.PI) / 360);
+        const hw = mission.halfWidth + EDGE_WALL_THICKNESS + FIT_MARGIN;
+        const hh = mission.halfHeight + EDGE_WALL_THICKNESS + FIT_MARGIN;
+        // Floor corners at height 0 and the sprite top at the far edge.
+        const points: [number, number, number][] = [
+            [hw, 0, hh],
+            [-hw, 0, hh],
+            [hw, 0, -hh],
+            [-hw, 0, -hh],
+            [hw, SPRITE_HEIGHT * c, -hh],
+            [-hw, SPRITE_HEIGHT * c, -hh]
+        ];
+        let dist = 1;
+        for (const [x, h, z] of points) {
+            const yc = c * h - s * z;
+            const common = s * h + c * z;
+            dist = Math.max(dist, Math.abs(x) / (tanHalf * aspect) + common, Math.abs(yc) / tanHalf + common);
+        }
+        dist *= 1.01;
+        camBase.y = dist * s;
+        camBase.z = dist * c;
+        camera.setPosition(camBase.x, camBase.y, camBase.z);
+    };
+
     const resize = (width: number, height: number): { cellCssPx: number } => {
         if (width < 1 || height < 1) return { cellCssPx: 24 };
         app.resizeCanvas(width, height);
-        const aspect = width / height;
-        // The floor is foreshortened by sin(tilt); the extra covers the robot standing at the far edge.
-        const needH = mission.halfHeight * Math.sin(TILT_RAD) + SPRITE_HEIGHT * Math.cos(TILT_RAD) * 0.5 + 0.1;
-        const needW = (mission.halfWidth + 0.1) / aspect;
-        const orthoH = Math.max(needH, needW);
-        if (camera.camera) camera.camera.orthoHeight = orthoH;
-        // Shift the camera along its view plane so the arena sits centred, sprite headroom included.
-        const lift = SPRITE_HEIGHT * Math.cos(TILT_RAD) * 0.25;
-        camBase.y = CAMERA_DISTANCE * Math.sin(TILT_RAD) + lift * Math.cos(TILT_RAD);
-        camBase.z = CAMERA_DISTANCE * Math.cos(TILT_RAD) - lift * Math.sin(TILT_RAD);
-        camera.setPosition(camBase.x, camBase.y, camBase.z);
+        fitPerspective(width / height);
         return { cellCssPx: 24 };
     };
 
