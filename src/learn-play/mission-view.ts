@@ -130,14 +130,10 @@ export const mountMission = async (host: HTMLElement, ctx: MissionContext): Prom
         blocksHost,
         lang,
         mission.allowedBlockTypes,
-        store.load(taskId).workspace
+        // Every visit starts from a clean workspace; saved blocks are no longer restored.
+        null
     );
     const Blockly = await import('blockly');
-    workspace.addChangeListener((e) => {
-        if (e.isUiEvent) return;
-        const p = store.load(taskId);
-        store.save(taskId, { ...p, workspace: saveState(workspace) });
-    });
 
     // ---- PlayCanvas ----
     let scene: ArenaScene | null = null;
