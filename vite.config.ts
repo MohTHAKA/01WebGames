@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+    // `vite build --mode unity` makes the build the lessons host of the webgameIF Unity app: every unit and
+    // game is playable and finished lessons are reported to the Unity menu (see src/learn-play/config.ts).
+    define: mode === 'unity' ? { 'import.meta.env.VITE_UNITY_HOST': JSON.stringify('1') } : {},
     // Relative URLs, so the build runs wherever it's served from: a domain root, a subpath such as
     // GitHub Pages or itch.io, or a Snapchat Web Lens
     base: './',
@@ -30,4 +33,4 @@ export default defineConfig({
             ]
         }
     ]
-});
+}));

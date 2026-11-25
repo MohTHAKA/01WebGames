@@ -15,6 +15,7 @@ import { evaluateMission } from './sim/evaluate.ts';
 import { BLOCKS, START_BLOCK, compileWorkspace } from './sim/program.ts';
 import { Simulation, distanceAheadCm } from './sim/simulation.ts';
 import type { Command, RobotPose } from './sim/types.ts';
+import { reportToUnity } from './unity-bridge.ts';
 
 export interface MissionContext {
     lang: Lang;
@@ -323,6 +324,7 @@ export const mountMission = async (host: HTMLElement, ctx: MissionContext): Prom
                 completed: p.completed || outcome.missionComplete !== false
             });
             showTrials();
+            if (outcome.missionComplete !== false) reportToUnity(store, taskId);
             const next = outcome.missionComplete !== false ? nextMissionHref(taskId) : null;
             feedback.className = 'lp-feedback lp-ok';
             feedback.replaceChildren(

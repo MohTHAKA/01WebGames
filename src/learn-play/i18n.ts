@@ -38,6 +38,15 @@ const strings = {
         backHome: 'Back to Learn & Play',
         logoAlt: 'ZERO1',
         gamesNote: 'Games use the same block editor and robot as the Learning Path. More games are on the way.',
+        lockedInUnity: 'Available in Unity',
+        unityRest: 'The remaining units and games are in the ZERO1 simulator. Open it to continue.',
+        lockedTask: 'Finish the previous task to unlock this one.',
+        lockedLevel: 'Finish the previous level to unlock this one.',
+        lockedLabel: 'Locked',
+        openInUnity: 'Continue in the ZERO1 simulator',
+        unityTitle: 'Continue in the webgameIF Unity project',
+        unityBody: 'The rest of the units and games are in the webgameIF Unity project. Open it to continue.',
+        unityLinkSoon: 'The Unity project link will be added soon.',
         play: 'Play',
         playable: 'Playable',
         levels: 'levels',
@@ -81,6 +90,15 @@ const strings = {
         backHome: 'العودة إلى تعلّم والعب',
         logoAlt: 'ZERO1',
         gamesNote: 'تستخدم الألعاب محرر الكتل والروبوت نفسيهما في مسار التعلّم. المزيد من الألعاب قادم.',
+        lockedInUnity: 'متاح في Unity',
+        unityRest: 'باقي الوحدات والألعاب في محاكي ZERO1. افتحه لتكمل.',
+        lockedTask: 'أنهِ المهمة السابقة لفتح هذه المهمة.',
+        lockedLevel: 'أنهِ المرحلة السابقة لفتح هذه المرحلة.',
+        lockedLabel: 'مقفل',
+        openInUnity: 'أكمل في محاكي ZERO1',
+        unityTitle: 'أكمل في مشروع webgameIF على Unity',
+        unityBody: 'باقي الوحدات والألعاب موجودة في مشروع webgameIF على Unity. افتحه لتكمل.',
+        unityLinkSoon: 'سيُضاف رابط مشروع Unity قريبًا.',
         play: 'العب',
         playable: 'متاحة',
         levels: 'مستويات',
@@ -95,6 +113,12 @@ const STORAGE_KEY = 'zero1.lang';
 
 export const loadLang = (): Lang => {
     try {
+        // The Unity app opens lessons as ...index.html?lang=ar so they follow the language chosen in its menu.
+        const requested = new URLSearchParams(location.search).get('lang');
+        if (requested === 'en' || requested === 'ar') {
+            saveLang(requested);
+            return requested;
+        }
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved === 'en' || saved === 'ar') return saved;
     } catch {

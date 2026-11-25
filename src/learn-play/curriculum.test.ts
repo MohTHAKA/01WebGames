@@ -42,8 +42,18 @@ describe('curriculum integrity', () => {
 describe('routing', () => {
     it('parses known routes', () => {
         expect(parseRoute('')).toEqual({ name: 'home' });
-        expect(parseRoute('#/unit/3')).toEqual({ name: 'unit', id: 3 });
-        expect(parseRoute('#/task/48')).toEqual({ name: 'task', id: 48 });
+        expect(parseRoute('#/unit/1')).toEqual({ name: 'unit', id: 1 });
+        expect(parseRoute('#/task/7')).toEqual({ name: 'task', id: 7 });
+        expect(parseRoute('#/game/code-quest')).toEqual({ name: 'game', gameId: 'code-quest' });
+        expect(parseRoute('#/play/1001')).toEqual({ name: 'play', id: 1001 });
+        expect(parseRoute('#/unity')).toEqual({ name: 'unity' });
+    });
+
+    it('sends content outside the web build to the Unity page', () => {
+        expect(parseRoute('#/unit/3')).toEqual({ name: 'unity' });
+        expect(parseRoute('#/task/48')).toEqual({ name: 'unity' });
+        expect(parseRoute('#/game/logic-maze')).toEqual({ name: 'unity' });
+        expect(parseRoute('#/play/1101')).toEqual({ name: 'unity' });
     });
 
     it('rejects unknown routes', () => {

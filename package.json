@@ -6,7 +6,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "build:unity": "vite build --mode unity --outDir ../webgameIF/Assets/StreamingAssets/Web --emptyOutDir",
         "dev": "vite --open",
+        "export:missions": "node scripts/export-missions.mjs",
         "fmt": "prettier --check .",
         "fmt:fix": "prettier --write .",
         "lint": "eslint .",

@@ -92,6 +92,16 @@ Prefer a real subpath: iframe nesting hurts deep links, language preference, and
 
 Clearing site data for `01skills.com` resets Learn & Play progress unless a shared progress API is added later.
 
+## Web scope and the Unity project
+
+The web build offers only Unit 1 (tasks 1-7) and the Code Quest game. The other units and games stay visible but locked, and open the webgameIF Unity project. Everything is set in `src/learn-play/config.ts`:
+
+- `UNITY_PROJECT_URL` — link to the Unity project. Locked cards and locked routes go straight to it. While it is empty they open the `#/unity` page, which says the link is coming.
+- `WEB_UNIT_IDS` and `WEB_GAME_IDS` — what stays on the web.
+
+Each task, and each Code Quest level, opens only after the previous one is completed (`src/learn-play/access.ts`).
+
+
 ## Caching
 
 Fingerprinted assets under `dist/assets/` can be cached long-term. Keep a short cache (or revalidate) for `index.html` so users pick up new releases.
