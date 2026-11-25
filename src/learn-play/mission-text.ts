@@ -126,22 +126,22 @@ export const missionText: Record<number, MissionText> = {
     ),
 
     12: t(
-        ['Steer to the right in a gentle curve and end on the flag.', 'انعطف يمينًا في منحنى لطيف وانتهِ عند العلم.'],
+        ['Turn the robot a little to the right, then drive forward to the flag.', 'أدر الروبوت قليلًا نحو اليمين ثم تحرك للأمام حتى العلم.'],
         [
-            'Use "steer" with a small positive value. Positive steers right.',
-            'استخدم كتلة "وجّه" بقيمة موجبة صغيرة. القيمة الموجبة تعني اليمين.'
+            'Use "steer" to turn in place (positive turns right), then "move forward".',
+            'استخدم كتلة "توجيه" للدوران في المكان (الموجب يمينًا) ثم كتلة "تحرك" للأمام.'
         ],
-        ['Try steering 10 for 3 rotations.', 'جرّب توجيه 10 لمدة 3 دورات.']
+        ['Try steering 100 for 0.15 rotations, then move forward 2.5 rotations.', 'جرّب توجيه 100 لمدة 0.15 دورة ثم تحرك للأمام 2.5 دورة.']
     ),
     13: t(
-        ['Make a sharper curve to the right and end on the flag.', 'اصنع منعطفًا أحد إلى اليمين وانتهِ عند العلم.'],
-        ['A larger steering value turns the robot more tightly.', 'قيمة التوجيه الأكبر تجعل الروبوت ينعطف بحدة أكبر.'],
-        ['Try steering 20 for 3 rotations.', 'جرّب توجيه 20 لمدة 3 دورات.']
+        ['Turn further to the right, then drive forward to the flag.', 'أدر الروبوت أكثر نحو اليمين ثم تحرك للأمام حتى العلم.'],
+        ['A longer turn points the robot further around before you drive.', 'كلما طالت مدة الدوران زادت زاوية دوران الروبوت قبل أن تتحرك.'],
+        ['Try steering 100 for 0.3 rotations, then move forward 2 rotations.', 'جرّب توجيه 100 لمدة 0.3 دورة ثم تحرك للأمام دورتين.']
     ),
     14: t(
-        ['Steer to the left and end on the flag.', 'انعطف يسارًا وانتهِ عند العلم.'],
+        ['Turn the robot a little to the left, then drive forward to the flag.', 'أدر الروبوت قليلًا نحو اليسار ثم تحرك للأمام حتى العلم.'],
         ['Negative steering values turn left.', 'قيم التوجيه السالبة تعني اليسار.'],
-        ['Try steering -10 for 3 rotations.', 'جرّب توجيه -10 لمدة 3 دورات.']
+        ['Try steering -100 for 0.15 rotations, then move forward 2.5 rotations.', 'جرّب توجيه -100 لمدة 0.15 دورة ثم تحرك للأمام 2.5 دورة.']
     ),
     15: t(
         ['Spin the robot in place until it faces the opposite way.', 'أدر الروبوت في مكانه حتى يواجه الاتجاه المعاكس.'],
@@ -175,11 +175,11 @@ export const missionText: Record<number, MissionText> = {
 
     19: t(
         [
-            'Change the speed, then steer to the right and end on the flag.',
-            'غيّر السرعة ثم انعطف يمينًا وانتهِ عند العلم.'
+            'Change the speed, then turn right and drive to the flag.',
+            'غيّر السرعة ثم أدر الروبوت يمينًا وتحرك حتى العلم.'
         ],
         ['Set a speed other than 50 before the steer block.', 'اضبط سرعة غير 50 قبل كتلة التوجيه.'],
-        ['Try speed 80 and steering 20 for 2 rotations.', 'جرّب سرعة 80 وتوجيه 20 لمدة دورتين.']
+        ['Try speed 80, steering 100 for 0.2 rotations, then move forward 1.5 rotations.', 'جرّب سرعة 80 وتوجيه 100 لمدة 0.2 دورة ثم تحرك للأمام 1.5 دورة.']
     ),
     20: t(
         ['Give each wheel its own speed to curve onto the flag.', 'أعطِ كل عجلة سرعتها الخاصة لتنعطف نحو العلم.'],
@@ -205,7 +205,7 @@ export const missionText: Record<number, MissionText> = {
         ['Three blocks: move, spin in place, move.', 'ثلاث كتل: حركة ثم دوران في المكان ثم حركة.'],
         [
             'Move 2 rotations, steer 100 for 0.5 rotations, move 2 rotations.',
-            'تحرك دورتين، ثم وجّه 100 لمدة 0.5 دورة، ثم تحرك دورتين.'
+            'تحرك دورتين، ثم توجيه 100 لمدة 0.5 دورة، ثم تحرك دورتين.'
         ]
     ),
     23: t(
@@ -227,7 +227,7 @@ export const missionText: Record<number, MissionText> = {
         ['Each side is the same move followed by a right turn.', 'كل ضلع هو الحركة نفسها يليها انعطاف يمين.'],
         [
             'Repeat 4 times: move 2 rotations, steer 100 for 0.5 rotations.',
-            'كرر 4 مرات: تحرك دورتين ثم وجّه 100 لمدة 0.5 دورة.'
+            'كرر 4 مرات: تحرك دورتين ثم توجيه 100 لمدة 0.5 دورة.'
         ]
     ),
 

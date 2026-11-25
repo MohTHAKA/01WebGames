@@ -360,7 +360,7 @@ export const gameLevelText: Record<number, MissionText> = {
         ],
         [
             'Repeat 4 times: move 2 rotations, steer 100 for 0.5 rotations.',
-            'كرر 4 مرات: تحرك دورتين ثم وجّه 100 لمدة 0.5 دورة.'
+            'كرر 4 مرات: تحرك دورتين ثم توجيه 100 لمدة 0.5 دورة.'
         ]
     ),
     1302: t(
@@ -396,7 +396,7 @@ export const gameLevelText: Record<number, MissionText> = {
         ],
         [
             'Repeat 8 times: move 1 rotation, steer 100 for 0.25 rotations.',
-            'كرر 8 مرات: تحرك دورة واحدة ثم وجّه 100 لمدة 0.25 دورة.'
+            'كرر 8 مرات: تحرك دورة واحدة ثم توجيه 100 لمدة 0.25 دورة.'
         ]
     ),
     1501: t(

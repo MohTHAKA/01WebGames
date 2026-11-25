@@ -82,7 +82,7 @@ const FIT_MARGIN = 0.02;
 /** Perimeter wall height and thickness (meters). */
 const EDGE_WALL_HEIGHT = 0.14;
 const EDGE_WALL_THICKNESS = 0.06;
-/** Robot sheet views (degrees, 0 = front toward the camera) in public/robot-<angle>.png. */
+/** Robot sheet views, named by the robot's heading in degrees (0 = driving away, back to the camera) in public/robot-<angle>.png. */
 const SHEET_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
 /** The robot billboard: wide enough to cover the collision footprint, height from the art's aspect. */
 const SPRITE_WIDTH = DEFAULT_CALIBRATION.robotRadiusMeters * 2 * 1.9;
@@ -314,9 +314,8 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         }
     }
 
-    // Robot: eight camera-facing billboards, one per sheet view. The sheet's angle is the view of
-    // the robot from the camera (0 = front toward the camera), so the heading it shows is
-    // `(sheetAngle + 180) % 360`: heading 0 drives away from the camera and shows the back view.
+    // Robot: eight camera-facing billboards, one per sheet view. Each image is named by the heading it
+    // shows: heading 0 drives away from the camera and shows the back view (robot-0.png).
     const sprites = SHEET_ANGLES.map((angle) => {
         const mat = flat('#ffffff');
         const entity = add(`robot-${angle}`, 'plane', mat);
@@ -325,9 +324,9 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         // Robot layer is always above the crate: transparent pass, no depth test.
         mat.depthTest = false;
         drawOrder(entity, DRAW_ROBOT);
-        return { entity, mat, alpha: 0, axis: (angle + 180) % 360 };
+        return { entity, mat, alpha: 0, axis: angle };
     });
-    sprites[SHEET_ANGLES.indexOf(180)].alpha = 1;
+    sprites[SHEET_ANGLES.indexOf(0)].alpha = 1;
     let lastFade = performance.now();
 
     const camera = new Entity('camera');

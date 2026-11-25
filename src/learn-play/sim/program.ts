@@ -176,7 +176,12 @@ export const compileWorkspace = (state: WorkspaceState, allowedBlockTypes: reado
                     if (!inRange(steering, -100, 100)) return fail('invalidValue');
                     const bad = checkTimed(driveSpeed);
                     if (bad) return bad;
-                    const { left, right } = steerSpeeds(driveSpeed, steering);
+                    // Turns the robot in place: the wheels spin in opposite directions, so it never leaves its spot.
+                    // The sign picks the direction (positive = right) and the size scales the turning speed.
+                    const spin = (driveSpeed * steering) / 100;
+                    const left = spin;
+                    const right = -spin;
+                    if (spin === 0 && unit !== 'seconds') return fail('zeroSpeed');
                     program.push({ type: 'drive', blockId, left, right, amount, unit: unit as MoveUnit });
                     break;
                 }
