@@ -82,11 +82,16 @@ const FIT_MARGIN = 0.02;
 /** Perimeter wall height and thickness (meters). */
 const EDGE_WALL_HEIGHT = 0.14;
 const EDGE_WALL_THICKNESS = 0.06;
-/** Robot sheet views, named by the robot's heading in degrees (0 = driving away, back to the camera) in public/robot-<angle>.png. */
-const SHEET_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
-/** The robot billboard: wide enough to cover the collision footprint, height from the art's aspect. */
-const SPRITE_WIDTH = DEFAULT_CALIBRATION.robotRadiusMeters * 2 * 1.9;
-const SPRITE_HEIGHT = (SPRITE_WIDTH * 316) / 297;
+/**
+ * Robot views: 16 frames in public/robot16-NN.png, 22.5 degrees apart. Frame 3 and 4 show the front
+ * (robot facing the camera) and frames 11 and 12 the back, so the frame centred on a heading is
+ * `180 + (NN - 3.5) * 22.5` degrees (heading 0 drives away from the camera and shows the back).
+ */
+const SHEET_FRAMES = 16;
+const frameHeading = (frame: number): number => (((180 + (frame - 3.5) * (360 / SHEET_FRAMES)) % 360) + 360) % 360;
+/** Billboard height keeps the robot the size it always was; the width follows the 241x274 frame aspect. */
+const SPRITE_HEIGHT = (DEFAULT_CALIBRATION.robotRadiusMeters * 2 * 1.9 * 316) / 297;
+const SPRITE_WIDTH = (SPRITE_HEIGHT * 241) / 274;
 /**
  * Scene backdrop per game, chosen by the task id block (see game-levels.ts): 1000s Code Quest,
  * 1100s Logic Maze, 1200s Sensor Rush, 1300s Pattern Builder, 1400s Robot Arena, 1500s Robo
@@ -314,19 +319,18 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
         }
     }
 
-    // Robot: eight camera-facing billboards, one per sheet view. Each image is named by the heading it
-    // shows: heading 0 drives away from the camera and shows the back view (robot-0.png).
-    const sprites = SHEET_ANGLES.map((angle) => {
+    // Robot: 16 camera-facing billboards, one per sheet frame, cross-faded by heading.
+    const sprites = Array.from({ length: SHEET_FRAMES }, (_, frame) => {
         const mat = flat('#ffffff');
-        const entity = add(`robot-${angle}`, 'plane', mat);
+        const entity = add(`robot-${frame}`, 'plane', mat);
         entity.enabled = false;
-        spriteTexture(mat, `./robot-${angle}.png`);
+        spriteTexture(mat, `./robot16-${String(frame).padStart(2, '0')}.png`);
         // Robot layer is always above the crate: transparent pass, no depth test.
         mat.depthTest = false;
         drawOrder(entity, DRAW_ROBOT);
-        return { entity, mat, alpha: 0, axis: angle };
+        return { entity, mat, alpha: 0, axis: frameHeading(frame) };
     });
-    sprites[SHEET_ANGLES.indexOf(0)].alpha = 1;
+    sprites[11].alpha = 1;
     let lastFade = performance.now();
 
     const camera = new Entity('camera');
@@ -382,7 +386,15 @@ export const createArenaScene = async (canvas: HTMLCanvasElement, mission: Missi
     // Place it far back and scale it up to fill the view
     const bgDist = 35; // Near the farClip plane
     const bgScale = bgDist * Math.tan((FOV * Math.PI) / 360) * 2;
-    place(background, 0, 14 * Math.sin(TILT_RAD) - bgDist * Math.sin(TILT_RAD), 14 * Math.cos(TILT_RAD) - bgDist * Math.cos(TILT_RAD), bgScale * 1.5, 1, bgScale);
+    place(
+        background,
+        0,
+        14 * Math.sin(TILT_RAD) - bgDist * Math.sin(TILT_RAD),
+        14 * Math.cos(TILT_RAD) - bgDist * Math.cos(TILT_RAD),
+        bgScale * 1.5,
+        1,
+        bgScale
+    );
     // Face the camera directly
     background.setLocalEulerAngles(90 - TILT_DEG, 0, 0);
     // Draw it before everything else

@@ -218,7 +218,7 @@ export class LearnPlayApp {
                         { class: 'lp-card-head' },
                         el('img', {
                             class: 'lp-robot',
-                            src: './robot-180.png',
+                            src: './robot16-04.png',
                             alt: '',
                             width: '40',
                             height: '40',
